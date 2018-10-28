@@ -12,7 +12,7 @@ def index():
 
 @app.route('/data') # take note of this decorator syntax, it's a common pattern
 def hello():
-    jsonResp =  { "dialogue":["Welcome to our bank", "hi can you help me with credit cards", "Please, waiting", "Theme: credit cards", "Routing to expert", "its not relevant sorry bye"], "emotions":  [{"joy":"70%"},{"annoyance":"40%"}]} # test_check_data
+    jsonResp =  { "dialogue":["Welcome to our bank", "Hi can you help me with credit cards", "Please, waiting", "Theme: credit cards", "Routing to expert", "Its not relevant sorry bye"], "emotions":  [{"joy":"70%"},{"annoyance":"40%"}]} # test_check_data
     print(jsonify(jsonResp))
     return jsonify(jsonResp)
 

@@ -1,12 +1,12 @@
 import React from "react";
 import { Grid, Row, Col } from "react-bootstrap";
-import ReactDOM from "react-dom";
-
+import Graphics from './Graphics'
 import { ReactMic } from "react-mic";
 
 export default class Hello extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       checkerAudio: false,
       clicker: false,
@@ -18,10 +18,6 @@ export default class Hello extends React.Component {
     this.getPythonHello = this.getPythonHello.bind(this);
   }
 
-  staticRend() {
-    setTimeout(function() {}.bind(this), 2000);
-  }
-  
   clicker() {
     if (!this.state.clicker) {
       this.startRecording();
@@ -84,6 +80,8 @@ export default class Hello extends React.Component {
     const { checkerAudio, clicker, positionStatic, dilog } = this.state;
     return (
       <div className="cont" style={{ top: positionStatic ? "1%" : "30%" }}>
+              {this.count === 5 ? <Graphics/>: 
+<section>
         <Grid>
           <Row>
             <Col md={7} mdOffset={5}>
@@ -212,7 +210,7 @@ export default class Hello extends React.Component {
                       ) : (
                         ""
                       )}
-                      {this.count >= 4 ? (
+                      {this.count >= 5 ? (
                         <div className="answer left">
                           <div className="avatar">
                             <img
@@ -241,7 +239,7 @@ export default class Hello extends React.Component {
         ) : (
           ""
         )}
-        {this.count === 4 ? this.staticRend() : ""}
+        </section>}
       </div>
     );
   }
