@@ -1,7 +1,12 @@
 import React from "react";
 import { Grid, Row, Col } from "react-bootstrap";
-import Graphics from './Graphics'
-import { ReactMic } from "react-mic";
+import Graphics from './Graphics';
+
+
+var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
+var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
+
 
 export default class Hello extends React.Component {
   constructor(props) {
@@ -22,7 +27,7 @@ export default class Hello extends React.Component {
     if (!this.state.clicker) {
       this.startRecording();
       if (this.count === -1) {
-        fetch("http://127.0.0.1:5000/data")
+        fetch("http://127.0.0.1:3000/data")
           .then(res => {
             return res.json();
           })
@@ -56,6 +61,35 @@ export default class Hello extends React.Component {
   }
 
   startRecording() {
+    var recognition = new SpeechRecognition();
+   
+    recognition.lang = 'ru-RU';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+  
+    recognition.start();
+
+    recognition.onresult = function(event) {
+  
+      var speechResult = event.results[0][0].transcript;
+      console.log(`speechResult`,JSON.stringify({
+        speech_data:speechResult
+      }))
+      fetch(`http://127.0.0.1:3000/postjson`,{
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+       method:'POST',
+        body: JSON.stringify({
+          speech_data:speechResult
+        })
+      }).then((res)=>{console.log(`res`,res)})
+  
+     // console.log('Confidence: ' + event.results[0][0].confidence);
+     // console.log(`speechResult`,speechResult)
+  
+    }
     this.setState({
       record: true
     });
@@ -67,17 +101,10 @@ export default class Hello extends React.Component {
     });
   }
 
-  onData(recordedBlob) {
-    console.log("chunk of real-time data is: ", recordedBlob);
-  }
-
-  onStop(recordedBlob) {
-    console.log("recordedBlob is: ", recordedBlob);
-  }
 
   render() {
     const name = "Hello, User";
-    const { checkerAudio, clicker, positionStatic, dilog } = this.state;
+    const {  clicker, positionStatic, dilog } = this.state;
     return (
       <div className="cont" style={{ top: positionStatic ? "1%" : "30%" }}>
               {this.count === 5 ? <Graphics/>: 
@@ -93,14 +120,6 @@ export default class Hello extends React.Component {
 
           <Row>
             <Col md={7} mdOffset={5} style={{ paddingTop: "15px" }}>
-              <div style={{ display: "none" }}>
-                <ReactMic
-                  record={clicker}
-                  className="sound-wave"
-                  onStop={this.onStop}
-                  onData={this.onData}
-                />
-              </div>
               <button
                 style={{ backgroundColor: clicker ? "#d9534f" : "#28a745" }}
                 type="button"
