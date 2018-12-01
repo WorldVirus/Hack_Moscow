@@ -1,6 +1,8 @@
 import random
 from flask import Flask, render_template
 from flask import jsonify
+from flask import request
+from flask import Response
 #from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
 
 app = Flask(__name__, static_folder='../static/dist', template_folder='../static')
@@ -16,6 +18,7 @@ def hello():
     print(jsonify(jsonResp))
     return jsonify(jsonResp)
 
+
 @app.route('/uploads/<path:filename>', methods=['GET', 'POST'])
 def download(filename):
     uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
@@ -25,6 +28,16 @@ def get_hello():
     greeting_list = ['Ciao', 'Hei', 'Salut', 'Hola', 'Hallo', 'Hej']
     return random.choice(greeting_list)
 
+@app.route('/postjson', methods = ['POST'])
+def postJsonHandler():
+    print (request.is_json)
+    content = request.get_json()
+    print (content["speech_data"])
+    
+    f = open('./data_text/speech.txt', 'a')
+    f.write(content["speech_data"] + '\n')
+    f.close()
+    return  Response( status=200)
 
 if __name__ == '__main__':
     app.run()
