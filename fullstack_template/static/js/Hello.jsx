@@ -27,7 +27,7 @@ export default class Hello extends React.Component {
     if (!this.state.clicker) {
       this.startRecording();
       if (this.count === -1) {
-        fetch("http://127.0.0.1:3000/data")
+        fetch("http://127.0.0.1:3800/data")
           .then(res => {
             return res.json();
           })
@@ -75,7 +75,7 @@ export default class Hello extends React.Component {
       console.log(`speechResult`,JSON.stringify({
         speech_data:speechResult
       }))
-      fetch(`http://127.0.0.1:3000/postjson`,{
+      fetch(`http://127.0.0.1:3800/postjson`,{
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -85,10 +85,7 @@ export default class Hello extends React.Component {
           speech_data:speechResult
         })
       }).then((res)=>{console.log(`res`,res)})
-  
-     // console.log('Confidence: ' + event.results[0][0].confidence);
-     // console.log(`speechResult`,speechResult)
-  
+
     }
     this.setState({
       record: true

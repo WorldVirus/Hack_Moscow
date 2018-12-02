@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from flask import jsonify
 from flask import request
 from flask import Response
+#import main
 #from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
 
 app = Flask(__name__, static_folder='../static/dist', template_folder='../static')
@@ -33,10 +34,10 @@ def postJsonHandler():
     print (request.is_json)
     content = request.get_json()
     print (content["speech_data"])
-    
     f = open('./data_text/speech.txt', 'a')
     f.write(content["speech_data"] + '\n')
     f.close()
+    main.classify_txt("finalized_model.sav","./data_text/speech.txt")
     return  Response( status=200)
 
 if __name__ == '__main__':
