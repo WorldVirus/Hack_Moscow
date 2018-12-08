@@ -1,1 +1,1 @@
-web: gunicorn ./fullstack_template/server:app
+web: gunicorn server:app

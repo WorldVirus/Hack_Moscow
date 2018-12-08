@@ -6,7 +6,7 @@ from flask import Response
 #import main
 #from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
 
-app = Flask(__name__, static_folder='../static/dist', template_folder='../static')
+app = Flask(__name__, static_folder='./fullstack_template/static/dist', template_folder='./fullstack_template/static')
 
 @app.route('/')
 def index():
