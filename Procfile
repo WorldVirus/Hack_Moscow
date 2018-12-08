@@ -1,1 +1,1 @@
-web: FLASK_APP=./fullstack_template/server/server.py flask run -h 127.0.0.1 -p 3800
+web: gunicorn ./fullstack_template/server:app
