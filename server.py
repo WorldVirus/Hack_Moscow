@@ -3,6 +3,7 @@ from flask import Flask, render_template
 from flask import jsonify
 from flask import request
 from flask import Response
+from magic.magic import MagicWorker
 #import main
 #from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
 
@@ -38,6 +39,14 @@ def postJsonHandler():
     f.write(content["speech_data"] + '\n')
     f.close()
     main.classify_txt("finalized_model.sav","./data_text/speech.txt")
+    
+    #magic time!
+    magic = MagicWorker()
+    with open('./data_text/speech.txt', 'r') as f:
+        req = f.readlines()[-1]
+    ans = magic.predict(req) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    #end magic time!
+
     return  Response( status=200)
 
 if __name__ == '__main__':

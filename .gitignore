@@ -1,2 +1,4 @@
 npm-debug.log
 .DS_Store
+.vscode
+/magic/__pycache__
