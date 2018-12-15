@@ -4,6 +4,8 @@ from flask import jsonify
 from flask import request
 from flask import Response
 from magic.magic import MagicWorker
+import os
+
 #import main
 #from flask.ext.uploads import UploadSet, configure_uploads, IMAGES
 
@@ -41,7 +43,12 @@ def postJsonHandler():
     main.classify_txt("finalized_model.sav","./data_text/speech.txt")
     
     #magic time!
-    magic = MagicWorker()
+    pa = os.getcwd()
+    pa = pa[:pa.find('Hack_Moscow') + len('Hack_Moscow') + 1] + 'magic'
+    p1 = os.path.abspath(pa + '/clusters.txt')
+    p2 = os.path.abspath(pa + '/stopwords.txt')
+    magic = MagicWorker(path_stopwords=p2, path_clusters=p1)
+
     with open('./data_text/speech.txt', 'r') as f:
         req = f.readlines()[-1]
     ans = magic.predict(req) #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

@@ -1,17 +1,18 @@
 from pymorphy2 import MorphAnalyzer
 import re
+import os
 
 class MagicWorker():
 
-    def __init__(self):
+    def __init__(self, path_stopwords, path_clusters):
         #self.classifier = ft.load(path_to_fasttext_model)
-        self.__stopwords = self.__get_stopwords__()
+        self.__stopwords = self.__get_stopwords__(path_stopwords)
         self.__analyzer = MorphAnalyzer()
-        self.__classes, self.__answers = self.__get_classes__()
+        self.__classes, self.__answers = self.__get_classes__(path_clusters)
 
-    def __get_classes__(self):
+    def __get_classes__(self, path_to_clusters):
         classes, answers = [], []
-        with open('clusters.txt', 'r') as f:
+        with open(path_to_clusters, 'r') as f:
             for line in f:
                 tmp = list(line.split(', '))
                 tmp[-1] = tmp[-1].replace('\n', '')
@@ -19,8 +20,8 @@ class MagicWorker():
                 answers.append(tmp[-1])
         return classes, answers
 
-    def __get_stopwords__(self):
-        with open('stopwords.txt', 'r') as f:
+    def __get_stopwords__(self, path_to_stopwords):
+        with open(path_to_stopwords, 'r') as f:
             stopwords = list(f.read().split('\n'))
         return stopwords
 
